@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>프론트엔드 개발 부트캠프 13기</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card: #181818;
+    --green: #00e676;
+    --green-dark: #00c853;
+    --green-glow: rgba(0,230,118,0.18);
+    --white: #f5f5f5;
+    --gray: #aaa;
+    --border: #222;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 60px;
+    background: rgba(10,10,10,0.95);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+  }
+  .logo { font-family: 'Orbitron', sans-serif; color: var(--green); font-size: 1.1rem; letter-spacing: 2px; }
+  nav a {
+    color: var(--gray); text-decoration: none; font-size: 0.85rem;
+    margin-left: 28px; transition: color .2s;
+  }
+  nav a:hover { color: var(--green); }
+  .cta-header {
+    background: var(--green); color: #000; font-weight: 700;
+    border: none; padding: 8px 20px; border-radius: 4px;
+    font-size: 0.85rem; cursor: pointer; margin-left: 28px;
+    transition: background .2s, transform .1s;
+  }
+  .cta-header:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; padding: 80px 20px 60px;
+    background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(0,230,118,0.10) 0%, transparent 70%), var(--black);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,230,118,0.04) 40px),
+                repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,230,118,0.04) 40px);
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block; background: var(--green); color: #000;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 2px;
+    padding: 4px 14px; border-radius: 50px; margin-bottom: 20px;
+    animation: fadeDown .6s ease both;
+  }
+  .hero h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 6vw, 4.2rem);
+    font-weight: 900; line-height: 1.1;
+    animation: fadeDown .7s .1s ease both;
+  }
+  .hero h1 span { color: var(--green); }
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: var(--gray); margin-top: 16px; max-width: 600px;
+    animation: fadeDown .7s .2s ease both;
+  }
+  .hero-dates {
+    display: flex; gap: 32px; margin-top: 32px; justify-content: center;
+    flex-wrap: wrap; animation: fadeDown .7s .3s ease both;
+  }
+  .date-item { text-align: center; }
+  .date-label { font-size: 0.7rem; color: var(--green); letter-spacing: 2px; text-transform: uppercase; }
+  .date-value { font-size: 1.2rem; font-weight: 700; }
+  .hero-cta {
+    margin-top: 40px; display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+    animation: fadeDown .7s .4s ease both;
+  }
+  .btn-primary {
+    background: var(--green); color: #000; font-weight: 900;
+    border: none; padding: 16px 40px; border-radius: 6px;
+    font-size: 1.05rem; cursor: pointer; letter-spacing: 1px;
+    box-shadow: 0 0 30px var(--green-glow);
+    transition: all .2s;
+  }
+  .btn-primary:hover { background: var(--green-dark); transform: translateY(-2px); box-shadow: 0 0 50px var(--green-glow); }
+  .btn-secondary {
+    background: transparent; color: var(--white);
+    border: 1.5px solid var(--border); padding: 16px 32px;
+    border-radius: 6px; font-size: 1rem; cursor: pointer;
+    transition: all .2s;
+  }
+  .btn-secondary:hover { border-color: var(--green); color: var(--green); }
+  .discount-chip {
+    margin-top: 20px; display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,230,118,0.1); border: 1px solid var(--green);
+    border-radius: 50px; padding: 6px 20px; font-size: 0.85rem; color: var(--green);
+    animation: fadeDown .7s .5s ease both;
+  }
+
+  /* ── STATS ── */
+  .stats {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 0;
+    background: var(--card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .stat-item {
+    flex: 1; min-width: 160px; text-align: center;
+    padding: 28px 20px; border-right: 1px solid var(--border);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-size: 2rem; font-weight: 900; color: var(--green); }
+  .stat-desc { font-size: 0.8rem; color: var(--gray); margin-top: 4px; }
+
+  /* ── SECTION BASE ── */
+  section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
+  .section-label { font-size: 0.75rem; color: var(--green); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
+  .section-title { font-size: clamp(1.5rem, 3.5vw, 2.4rem); font-weight: 900; line-height: 1.2; margin-bottom: 12px; }
+  .section-sub { color: var(--gray); font-size: 0.95rem; max-width: 600px; }
+  .divider { width: 100%; height: 1px; background: var(--border); margin: 0; }
+
+  /* ── HIRING ── */
+  .hiring-section { background: var(--dark); }
+  .hiring-section > div { max-width: 1100px; margin: 0 auto; padding: 80px 20px; }
+  .hiring-title { text-align: center; margin-bottom: 40px; }
+  .company-logos {
+    display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 32px;
+  }
+  .company-chip {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 24px;
+    font-size: 0.9rem; font-weight: 700; color: var(--white);
+    transition: border-color .2s;
+  }
+  .company-chip:hover { border-color: var(--green); }
+
+  /* ── FEATURES 3COL ── */
+  .features-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px; margin-top: 48px;
+  }
+  .feature-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 32px 28px;
+    transition: border-color .25s, transform .25s;
+  }
+  .feature-card:hover { border-color: var(--green); transform: translateY(-4px); }
+  .feature-icon { font-size: 2rem; margin-bottom: 16px; }
+  .feature-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
+  .feature-card p { color: var(--gray); font-size: 0.88rem; line-height: 1.7; }
+
+  /* ── CURRICULUM ── */
+  .curriculum-section { background: var(--dark); }
+  .curriculum-section > div { max-width: 1100px; margin: 0 auto; padding: 80px 20px; }
+  .curriculum-list { margin-top: 40px; display: flex; flex-direction: column; gap: 4px; }
+  .curriculum-item {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 20px 28px;
+    display: flex; align-items: center; gap: 16px;
+    cursor: pointer; transition: border-color .2s;
+  }
+  .curriculum-item:hover { border-color: var(--green); }
+  .curriculum-week {
+    min-width: 56px; background: var(--green); color: #000;
+    font-size: 0.72rem; font-weight: 900; padding: 3px 10px;
+    border-radius: 50px; text-align: center;
+  }
+  .curriculum-title { font-weight: 700; flex: 1; }
+  .curriculum-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tag {
+    background: rgba(0,230,118,0.1); color: var(--green);
+    border-radius: 4px; padding: 2px 8px; font-size: 0.72rem;
+  }
+
+  /* ── REVIEWS ── */
+  .reviews-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px; margin-top: 48px;
+  }
+  .review-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px 24px;
+  }
+  .review-stars { color: var(--green); font-size: 0.85rem; margin-bottom: 12px; }
+  .review-text { color: var(--gray); font-size: 0.87rem; line-height: 1.7; margin-bottom: 16px; }
+  .reviewer { font-weight: 700; font-size: 0.85rem; }
+  .reviewer-role { color: var(--gray); font-size: 0.78rem; }
+
+  /* ── PRICING ── */
+  .pricing-section { background: var(--dark); }
+  .pricing-section > div { max-width: 1100px; margin: 0 auto; padding: 80px 20px; text-align: center; }
+  .price-box {
+    display: inline-block; background: var(--card);
+    border: 2px solid var(--green); border-radius: 16px;
+    padding: 48px 64px; margin-top: 40px;
+    box-shadow: 0 0 60px var(--green-glow);
+  }
+  .price-original { text-decoration: line-through; color: var(--gray); font-size: 1.2rem; }
+  .price-discount { color: var(--green); font-size: 1rem; margin-left: 8px; font-weight: 700; }
+  .price-main { font-size: 3rem; font-weight: 900; margin: 8px 0; }
+  .price-note { color: var(--gray); font-size: 0.85rem; }
+  .price-benefits { display: flex; gap: 24px; margin-top: 32px; flex-wrap: wrap; justify-content: center; }
+  .benefit-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+  .benefit-item::before { content: '✓'; color: var(--green); font-weight: 900; }
+
+  /* ── FAQ ── */
+  .faq-list { margin-top: 40px; display: flex; flex-direction: column; gap: 8px; }
+  .faq-item {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 20px 24px;
+  }
+  .faq-q { font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; justify-content: space-between; }
+  .faq-a { color: var(--gray); font-size: 0.87rem; margin-top: 12px; line-height: 1.7; }
+
+  /* ── FINAL CTA ── */
+  .final-cta {
+    background: linear-gradient(135deg, rgba(0,230,118,0.12) 0%, transparent 60%), var(--dark);
+    text-align: center; padding: 100px 20px;
+    border-top: 1px solid var(--border);
+  }
+  .final-cta h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; margin-bottom: 16px; }
+  .final-cta h2 span { color: var(--green); }
+  .final-cta p { color: var(--gray); font-size: 1rem; margin-bottom: 40px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #080808; border-top: 1px solid var(--border);
+    padding: 40px; text-align: center; color: var(--gray); font-size: 0.8rem;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* scrollReveal */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    header { padding: 0 20px; }
+    nav { display: none; }
+    .price-box { padding: 32px 24px; }
+    .stat-item { min-width: 140px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">EST<span style="color:#fff">BOOTCAMP</span></div>
+  <nav>
+    <a href="#features">과정소개</a>
+    <a href="#curriculum">커리큘럼</a>
+    <a href="#reviews">수강후기</a>
+    <a href="#pricing">수강료</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <button class="cta-header">수강 신청하기</button>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge">🔥 2026년 상반기 · 모집 중</div>
+  <h1>프론트엔드 개발<br><span>부트캠프 13기</span></h1>
+  <p class="hero-sub">취업률 92% · 실무 프로젝트 중심 · 현직 개발자 멘토링</p>
+  <div class="hero-dates">
+    <div class="date-item"><div class="date-label">모집 마감</div><div class="date-value">2026.03.21</div></div>
+    <div class="date-item"><div class="date-label">과정 시작</div><div class="date-value">2026.04.07</div></div>
+    <div class="date-item"><div class="date-label">과정 기간</div><div class="date-value">5개월</div></div>
+  </div>
+  <div class="hero-cta">
+    <button class="btn-primary">지금 수강 신청하기 →</button>
+    <button class="btn-secondary">커리큘럼 보기</button>
+  </div>
+  <div class="discount-chip">⚡ 얼리버드 30만 원 할인 · 3월 21일까지</div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-item"><div class="stat-num">92%</div><div class="stat-desc">수료 후 취업률</div></div>
+  <div class="stat-item"><div class="stat-num">12기</div><div class="stat-desc">누적 운영 기수</div></div>
+  <div class="stat-item"><div class="stat-num">850+</div><div class="stat-desc">수료생 수</div></div>
+  <div class="stat-item"><div class="stat-num">4.8★</div><div class="stat-desc">수강생 만족도</div></div>
+  <div class="stat-item"><div class="stat-num">150+</div><div class="stat-desc">취업 협력 기업</div></div>
+</div>
+
+<div class="divider"></div>
+
+<!-- HIRING COMPANIES -->
+<div class="hiring-section">
+  <div>
+    <div class="hiring-title reveal">
+      <div class="section-label">취업 현황</div>
+      <h2 class="section-title">수료생 주요 취업 현황</h2>
+      <p class="section-sub" style="margin: 0 auto;">이스트부트캠프 수료생들이 취업한 주요 기업들입니다</p>
+    </div>
+    <div class="company-logos reveal">
+      <div class="company-chip">삼성SDS</div>
+      <div class="company-chip">NAVER Cloud</div>
+      <div class="company-chip">카카오</div>
+      <div class="company-chip">LINE</div>
+      <div class="company-chip">TOSS</div>
+      <div class="company-chip">당근마켓</div>
+      <div class="company-chip">무신사</div>
+      <div class="company-chip">크래프톤</div>
+      <div class="company-chip">넥슨</div>
+      <div class="company-chip">쿠팡</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="reveal">
+    <div class="section-label">과정 특징</div>
+    <h2 class="section-title">독보적인 운영으로 차별화된<br>프리미엄 교육 경험</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <div class="feature-icon">💻</div>
+      <h3>100% 실무 프로젝트</h3>
+      <p>이론 중심이 아닌 실제 현업에서 사용되는 기술 스택과 개발 방식으로 진행합니다. 포트폴리오가 될 프로젝트를 직접 만들어 갑니다.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">🎯</div>
+      <h3>현직 개발자 멘토링</h3>
+      <p>NAVER, 카카오 등 현직 시니어 개발자가 1:1 코드 리뷰와 커리어 멘토링을 제공합니다. 실제 현업 관점의 피드백을 받으세요.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">🤝</div>
+      <h3>취업 연계 프로그램</h3>
+      <p>150개 이상의 협력 기업 DB를 보유하고 있습니다. 이력서·포트폴리오 첨삭, 모의 기술 면접까지 취업 완료 시까지 전담 지원합니다.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CURRICULUM -->
+<div class="curriculum-section" id="curriculum">
+  <div>
+    <div class="reveal">
+      <div class="section-label">커리큘럼</div>
+      <h2 class="section-title">체계적으로 설계된<br>5개월 완성 로드맵</h2>
+    </div>
+    <div class="curriculum-list">
+      <div class="curriculum-item reveal">
+        <span class="curriculum-week">1–4주</span>
+        <span class="curriculum-title">웹 개발 기초</span>
+        <div class="curriculum-tags">
+          <span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript ES6+</span>
+        </div>
+      </div>
+      <div class="curriculum-item reveal">
+        <span class="curriculum-week">5–8주</span>
+        <span class="curriculum-title">JavaScript 심화 · React 기초</span>
+        <div class="curriculum-tags">
+          <span class="tag">React</span><span class="tag">Hooks</span><span class="tag">SPA</span>
+        </div>
+      </div>
+      <div class="curriculum-item reveal">
+        <span class="curriculum-week">9–14주</span>
+        <span class="curriculum-title">React 심화 · Next.js · TypeScript</span>
+        <div class="curriculum-tags">
+          <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Recoil</span>
+        </div>
+      </div>
+      <div class="curriculum-item reveal">
+        <span class="curriculum-week">15–20주</span>
+        <span class="curriculum-title">팀 프로젝트 · 취업 준비</span>
+        <div class="curriculum-tags">
+          <span class="tag">포트폴리오</span><span class="tag">기술 면접</span><span class="tag">코딩테스트</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="reveal">
+    <div class="section-label">수강 후기</div>
+    <h2 class="section-title">수강생들이 직접 전하는<br>생생한 경험</h2>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">비전공자로 걱정이 많았는데, 기초부터 취업까지 정말 체계적으로 이끌어 줬어요. 4개월 만에 스타트업 프론트엔드 개발자로 취업했습니다.</p>
+      <div class="reviewer">김지수 · 23기 수료생</div>
+      <div class="reviewer-role">현 (주)핀테크랩 프론트엔드 개발자</div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">현직 멘토님들의 코드 리뷰가 최고였습니다. 독학으로는 절대 받을 수 없는 퀄리티의 피드백 덕분에 실력이 눈에 띄게 성장했어요.</p>
+      <div class="reviewer">이민준 · 21기 수료생</div>
+      <div class="reviewer-role">현 NAVER 협력사 개발자</div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">팀 프로젝트 경험이 실제 면접에서 너무 큰 도움이 됐어요. 포트폴리오 덕분에 서류 통과율이 확 올라갔습니다. 망설이지 말고 지원하세요!</p>
+      <div class="reviewer">박수빈 · 22기 수료생</div>
+      <div class="reviewer-role">현 카카오페이 협력사 개발자</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRICING -->
+<div class="pricing-section" id="pricing">
+  <div>
+    <div class="reveal">
+      <div class="section-label">수강료</div>
+      <h2 class="section-title">지금 결정이 가장 현명한 투자</h2>
+      <p class="section-sub" style="margin: 0 auto;">얼리버드 할인 · 3월 21일(일) 자정 마감</p>
+    </div>
+    <div class="price-box reveal">
+      <div>
+        <span class="price-original">4,900,000원</span>
+        <span class="price-discount">-30만 원 할인</span>
+      </div>
+      <div class="price-main">4,600,000원</div>
+      <div class="price-note">부가세 포함 · 분할납부 가능 (무이자 12개월)</div>
+      <div class="price-benefits">
+        <div class="benefit-item">전액 환불 보장</div>
+        <div class="benefit-item">취업 성공 시까지 지원</div>
+        <div class="benefit-item">수료 후 커뮤니티 평생 제공</div>
+      </div>
+      <button class="btn-primary" style="margin-top: 36px; width: 100%; font-size: 1.1rem;">지금 수강 신청하기 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="reveal">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">자주 묻는 질문</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item reveal">
+      <div class="faq-q">비전공자도 지원 가능한가요? <span>＋</span></div>
+      <div class="faq-a">네, 전공 무관 누구나 지원 가능합니다. 선발 기준은 학습 의지와 기본 컴퓨터 활용 능력입니다. 비전공자 수료생이 전체의 60% 이상입니다.</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q">수업은 온라인인가요, 오프라인인가요? <span>＋</span></div>
+      <div class="faq-a">오프라인 수업을 원칙으로 합니다. 서울 강남 교육장에서 진행되며, 불가피한 사정이 있는 경우 일부 온라인 수강이 허용됩니다.</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q">수료 후 취업 지원은 얼마나 지속되나요? <span>＋</span></div>
+      <div class="faq-a">취업 성공 시까지 무기한 지원합니다. 이력서·포트폴리오 첨삭, 모의 면접, 채용 연계 등 모든 서비스를 취업 완료까지 제공합니다.</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q">국민내일배움카드로 수강 가능한가요? <span>＋</span></div>
+      <div class="faq-a">네, 국민내일배움카드 사용이 가능합니다. 자부담 최소화를 위한 상담을 원하시면 카카오톡 채널로 문의해 주세요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<div class="final-cta">
+  <h2>변화는 <span>지금 이 순간</span>부터</h2>
+  <p>마감 전 지원하고 얼리버드 혜택을 받으세요</p>
+  <button class="btn-primary" style="font-size: 1.15rem; padding: 18px 56px;">수강 신청하기 →</button>
+  <p style="margin-top: 16px; color: var(--gray); font-size: 0.8rem;">🔒 지원 후 7일 이내 전액 환불 보장</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div style="margin-bottom: 12px; font-family: 'Orbitron', sans-serif; color: var(--green); font-size: 0.95rem; letter-spacing: 2px;">ESTBOOTCAMP</div>
+  <p>㈜이스트소프트 | 서울특별시 서초구 강남대로 369 | 사업자등록번호 123-45-67890</p>
+  <p style="margin-top: 6px;">Copyright © 2026 ESTsoft Corp. All rights reserved.</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => io.observe(el));
+
+  // FAQ toggle
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const a = q.nextElementSibling;
+      const isOpen = a.style.display === 'block';
+      document.querySelectorAll('.faq-a').forEach(x => x.style.display = 'none');
+      document.querySelectorAll('.faq-q span').forEach(x => x.textContent = '＋');
+      if (!isOpen) { a.style.display = 'block'; q.querySelector('span').textContent = '－'; }
+    });
+  });
+</script>
+</body>
+</html>
